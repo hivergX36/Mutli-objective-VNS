@@ -125,7 +125,7 @@
         }
     }
 
-    void checkindividual(Solution & individual){
+    void checkFistindividual(Solution & individual){
         bool check = true;
 
         for(int i = 0; i < NbConstraints; i++){
@@ -146,6 +146,35 @@
 
         std::cout << "La solution est admissible" << std::endl; 
         Non_dominated_Set->push_back(individual);
+
+        }
+   
+
+
+        }
+
+
+     void checkindividual(Solution & individual){
+        bool check = true;
+
+        for(int i = 0; i < NbConstraints; i++){
+            std::cout << "La contrainte est: " << constraint[i][0] << std::endl;
+            if( individual.SumConstraint[0][i] > constraint[i][0] || individual.SumConstraint[0][i] == 0){
+             
+                check = false;
+                break;
+            }
+        }
+
+        std::cout << "le booléen est: " << check << std::endl;
+
+        if(check == false){
+            std::cout << "La solution n'est pas admissible" << std::endl; 
+
+        }else{
+
+        std::cout << "La solution est admissible" << std::endl; 
+        Neighboorhood_Set->push_back(individual);
 
         }
    
@@ -189,42 +218,21 @@
     }
     }
 
-    }
+
 
 
     void displaynondominatedSet(){
 
-        sort(Non_dominated_Set[0].begin(), Non_dominated_Set[0].end(),RangeRankSolution());
 
-        std::cout << "La population est: " << std::endl; 
-        for(int i = 0;i < NbPop; i++){
+    
+        for(int i = 0;i < Non_dominated_Set[0].size(); i++){
             std::cout << "individu_" << i + 1 << " : ";
             for(int j = 0; j < NbVariable; j++){
 
-                std::cout << Population[0][i].solution[0][j] << " ";
+                std::cout << Non_dominated_Set[0][i].solution[0][j] << " ";
             }
 
-            std::cout << "obj1: " << Population[0][i].FitnessValue1 << " " << "obj2: " << Population[0][i].FitnessValue2 << " rank: " << Population[0][i].rank <<   std::endl;  
-
-
-
-        }
-
-      
-
-    }
-
-    void displayList(std::vector<Solution> & List){
-
-        std::cout << "La Liste est: " << std::endl; 
-        for(int i = 0;i < List.size(); i++){
-            std::cout << "individu_" << i + 1 << " : ";
-            for(int j = 0; j < NbVariable; j++){
-
-                std::cout << List[i].solution[0][j] << " ";
-            }
-
-            std::cout << "obj1: " << List[i].FitnessValue1 << " " << "obj2: " << List[i].FitnessValue2 << " rank: " << List[i].rank <<   std::endl;  
+            std::cout << "obj1: " << Non_dominated_Set[0][i].FitnessValue1 << " " << "obj2: " << Non_dominated_Set[0][i].FitnessValue2 << " rank: " << Non_dominated_Set[0][i].rank <<   std::endl;  
 
 
 
@@ -235,22 +243,6 @@
     }
 
 
-   void displayEchantillon(){
-        std::cout << "L'Echantillon est: " << std::endl; 
-        for(int i = 0;i < Nbind; i++){
-            std::cout << "individu_" << i + 1 << " : ";
-            for(int j = 0; j < NbVariable; j++){
-
-                std::cout << Echantillon[0][i].solution[0][j] << " ";
-            }
-
-            std::cout << "obj1: " << Echantillon[0][i].FitnessValue1 << " " << "obj2: " << Echantillon[0][i].FitnessValue2 << std::endl;  
-
-
-
-
-        }
-      }
                 
                 
 
@@ -271,7 +263,7 @@
     }
 
 
-    void displayProblemVega(){
+    void displayMultiVNS(){
 
 
 
@@ -302,24 +294,49 @@
     }
 
 
-    void fitnessValuePop(/*std::vector<Solution> & Echantillon, int dim*/){
+    void fitnessNonDominatedSet(std::vector<Solution> & Non_dominated_Set){
         float fitnessvalue1;
         float fitnessvalue2; 
         int compteur = 0;
-        while(compteur < NbPop)
+        for(int i = 0; i < Non_dominated_Set.size(); i ++)
         {
             fitnessvalue1 = 0; 
             fitnessvalue2 = 0;
-            if(Population[0][compteur].fitnessCalculated == false){
+            if(Non_dominated_Set[i].fitnessCalculated == false){
                 for(int i = 0; i < NbVariable; i++){
-                    fitnessvalue1+= Population[0][compteur].solution[0][i] * Price[0][i];
-                    fitnessvalue2+= Population[0][compteur].solution[0][i] * Price[1][i];
+                    fitnessvalue1+= Non_dominated_Set[i].solution[0][i] * Price[0][i];
+                    fitnessvalue2+= Non_dominated_Set[i].solution[0][i] * Price[1][i];
 
                 }
-                Population[0][compteur].FitnessValue1 = fitnessvalue1;
-                Population[0][compteur].FitnessValue2 = fitnessvalue2; 
+                Non_dominated_Set[i].FitnessValue1 = fitnessvalue1;
+                Non_dominated_Set[i].FitnessValue2 = fitnessvalue2; 
  
-                Population[0][compteur].fitnessCalculated = true;
+                Non_dominated_Set[i].fitnessCalculated = true;
+            }
+
+
+
+        }
+    }
+
+     void NeighborhoodSet(std::vector<Solution> & Neighboorhood_Set){
+        float fitnessvalue1;
+        float fitnessvalue2; 
+        int compteur = 0;
+        for(int i = 0; i < Neighboorhood_Set.size(); i ++)
+        {
+            fitnessvalue1 = 0; 
+            fitnessvalue2 = 0;
+            if(Neighboorhood_Set[i].fitnessCalculated == false){
+                for(int i = 0; i < NbVariable; i++){
+                    fitnessvalue1+= Neighboorhood_Set[i].solution[0][i] * Price[0][i];
+                    fitnessvalue2+= Neighboorhood_Set[i].solution[0][i] * Price[1][i];
+
+                }
+                Neighboorhood_Set[i].FitnessValue1 = fitnessvalue1;
+                Neighboorhood_Set[i].FitnessValue2 = fitnessvalue2; 
+ 
+                Neighboorhood_Set[i].fitnessCalculated = true;
             }
 
             compteur++;
@@ -329,24 +346,25 @@
     }
 
 
-    void rankPopulation(){
+
+    void rankNonDominatedSet(){
         int compteur = 0;     
         int nextrank = 0; 
         int Nbrank = 0;
         int indMax = 0;
         bool ranked; 
         float max; 
-        sort(Population[0].begin(), Population[0].end(),Solution());
+        sort(Non_dominated_Set[0].begin(), Non_dominated_Set[0].end(),Solution());
         for(int k = 0; k < NbPop; k++){
-            Population[0][k].rank = NbPop + 1;
+            Non_dominated_Set[0][k].rank = NbPop + 1;
         }
 
         while(Nbrank < NbPop){
             ranked = false; 
-            max = Population[0][compteur].FitnessValue2;
-            Population[0][compteur].rank = nextrank; 
+            max = Non_dominated_Set[0][compteur].FitnessValue2;
+            Non_dominated_Set[0][compteur].rank = nextrank; 
             for(int k = compteur; k < NbPop ; k++){
-                if(Population[0][k].FitnessValue2 < max ){
+                if(Non_dominated_Set[0][k].FitnessValue2 < max ){
                     if(ranked == false){
                     compteur = k;
                     ranked = true;
@@ -354,11 +372,11 @@
                     }
                     else{
           
-                        if(Population[0][k].checkrank == false){
-                        Population[0][k].rank = nextrank;
-                        max = Population[0][k].FitnessValue2;
+                        if(Non_dominated_Set[0][k].checkrank == false){
+                        Non_dominated_Set[0][k].rank = nextrank;
+                        max = Non_dominated_Set[0][k].FitnessValue2;
                         indMax = k;
-                        Population[0][k].checkrank = true;
+                        Non_dominated_Set[0][k].checkrank = true;
                         Nbrank ++; 
                         
                     }
@@ -373,37 +391,6 @@
 
                                    
 
-
-        
-    
-
-    void fitnessValueSample(){
-        float fitnessvalue1;
-        float fitnessvalue2; 
-        int compteur = 0;
-        while(compteur < Nbind)
-        {
-            fitnessvalue1 = 0; 
-            fitnessvalue2 = 0; 
-            if(Echantillon[0][compteur].fitnessCalculated == false){
-                for(int i = 0; i < NbVariable; i++){
-                    fitnessvalue1 += Echantillon[0][compteur].solution[0][i] * Price[0][i];
-                    fitnessvalue2 += Echantillon[0][compteur].solution[0][i] * Price[1][i]; 
-                }
-                Echantillon[0][compteur].FitnessValue1 = fitnessvalue1;
-                Echantillon[0][compteur].FitnessValue2 = fitnessvalue2;
-                Echantillon[0][compteur].fitnessCalculated = true;
-            }
-
-            compteur++;
-
-
-        }
-
-
-    }
-
-   
 
 
 
@@ -446,7 +433,7 @@
 
 //movement 
 //drop 
-   void drop(){
+   void drop(Solution & individual){
         int compteur = 0;
         int nb_one = 0;
         int indice;
@@ -454,13 +441,13 @@
         
 
         for(int i = 0; i < NbVariable; i++){
-            if(NeighbourSolution[0][i] > 0){
+            if(individual.solution[i] > 0){
             nb_one++;  
             }
         }
         int listChoix[nb_one];
         for(int i = 0; i < NbVariable; i++){
-            if(NeighbourSolution[0][i] > 0){
+            if(individual.solution[i] > 0){
                 listChoix[compteur] = i;
                 compteur++;
             }
@@ -469,12 +456,12 @@
         indice = rand() % compteur;
         std::cout << "indice à supprimer: " << indice << std::endl;
         choix = listChoix[indice];
-        NeighbourSolution[0][choix] = 0;
+        individual.solution[choix] = 0;
 
     }
 
 //add 
-    void add(){
+    void add(Solution & individual){
         int compteur = 0;
         int nb_one = 0;
         int indice;
@@ -506,21 +493,21 @@
 
 //repaire 
 
-    void Repaire(Solution & Enfant){
+    void Repaire(Solution & individual){
         int compteur = 0;
         int nb_one = 0;
         int indice;
         int choix; 
         
 
-        for(int i = 0; i < NbVariable; i++){
-            if(Enfant.solution[0][i] > 0){
+        for(int i = 0; i < ; i++){
+            if(individual.solution[0][i] > 0){
             nb_one++;  
             }
         }
         int listChoix[nb_one];
         for(int i = 0; i < NbVariable; i++){
-            if(Enfant.solution[0][i] > 0){
+            if(individual.solution[0][i] > 0){
                 listChoix[compteur] = i;
                 compteur++;
             }

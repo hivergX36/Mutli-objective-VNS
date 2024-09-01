@@ -17,6 +17,7 @@ struct Solution{
     bool valid;
     bool fitnessCalculated;
     bool checkrank;
+    bool admissible;
     float crowdingdistance;
 
     Solution(){
@@ -29,6 +30,7 @@ struct Solution{
          rank = 0;
          checkrank = false;
          crowdingdistance = 0;
+         admissible = false; 
     
 
     }
