@@ -394,11 +394,13 @@
 
 
 
-    void CheckSampleindividual(Solution & individual){
+    void CheckSampleindividual(Solution & individual,int compteur){
+
         bool check = true;
         for(int i = 0; i < NbConstraints; i++){
             std::cout << "La contrainte est: " << constraint[i][0] << std::endl;
             if( individual.SumConstraint[0][i] > constraint[i][0] || individual.SumConstraint[0][i] == 0){
+                individual.admissible = false; 
              
                 check = false;
                 break;
@@ -409,14 +411,14 @@
             std::cout << "La solution n'est pas admissible" << std::endl; 
         
             if(compteur < 1){
-                RepaireSample(individual);
+                Repaire(individual);
                 compteur++;
-                CheckSampleindividual(individual, compteur, ind);
+                CheckSampleindividual(individual, compteur);
 
             }
             }else{
                 std::cout << "La solution est admissible" << std::endl; 
-                Echantillon[0][ind] = individual;
+                individual.admissible = false;
                 compteur++;
                 }
             }
@@ -424,7 +426,8 @@
 
 
 
-    }
+    
+    
 
 
 
@@ -441,13 +444,13 @@
         
 
         for(int i = 0; i < NbVariable; i++){
-            if(individual.solution[i] > 0){
+            if(individual.solution[0][i] > 0){
             nb_one++;  
             }
         }
         int listChoix[nb_one];
         for(int i = 0; i < NbVariable; i++){
-            if(individual.solution[i] > 0){
+            if(individual.solution[0][i] > 0){
                 listChoix[compteur] = i;
                 compteur++;
             }
@@ -456,7 +459,7 @@
         indice = rand() % compteur;
         std::cout << "indice à supprimer: " << indice << std::endl;
         choix = listChoix[indice];
-        individual.solution[choix] = 0;
+        individual.solution[0][choix] = 0;
 
     }
 
@@ -469,13 +472,13 @@
         
 
         for(int i = 0; i < NbVariable; i++){
-            if(NeighbourSolution[0][i] < 1){
+            if(individual.solution[0][i] < 1){
             nb_one++;  
             }
         }
         int listChoix[nb_one];
         for(int i = 0; i < NbVariable; i++){
-            if(NeighbourSolution[0][i] < 1){
+            if(individual.solution[0][i] < 1){
                 listChoix[compteur] = i;
                 compteur++;
             }
@@ -483,7 +486,7 @@
 
         indice = rand() % compteur;
         choix = listChoix[indice];
-        NeighbourSolution[0][choix] = 1;
+        individual.solution[0][choix] = 1;
 
 
 
@@ -500,7 +503,7 @@
         int choix; 
         
 
-        for(int i = 0; i < ; i++){
+        for(int i = 0; i < NbVariable; i++){
             if(individual.solution[0][i] > 0){
             nb_one++;  
             }
@@ -516,34 +519,34 @@
         indice = rand() % compteur;
         std::cout << "indice à supprimer: " << indice << std::endl;
         choix = listChoix[indice];
-        Enfant.solution[0][choix] = 0;
+        individual.solution[0][choix] = 0;
 
     }
+    
 
 
 
 
- 
+
 
 //Update by rank and crowding distance 
 
-   void Update(){
+  /* void Update(){
     int compteur = 0; 
     int indicefront = 0;
     bool Update = false;
     int indiceVec = 0;
     int comptList = 0; 
     int nbListInd = NbPop + Nbind;
-    fitnessValueSample();
     std::vector<Solution> List;
-    for(int i = 0; i < NbPop; i++){
-        List.push_back(Population[0][i]);
-    }
-    for(int j = 0; j < Nbind; j++){
-        List.push_back(Echantillon[0][j]);
-    }
+  //  for(int i = 0; i < NbPop; i++){
+    //    List.push_back(Population[0][i]);
+    //}
+   // for(int j = 0; j < Nbind; j++){
+     //   List.push_back(Echantillon[0][j]);
+    //}
 
-    while(compteur < NbPop){
+ while(compteur < NbPop){
     sort(Front[0][indicefront].begin(), Front[0][indicefront].end(),RangeRankcrowdingMeasure());
     for(int k = 0; k < Front[0][indicefront].size();k++){
         Population[0][compteur] = Front[0][indicefront][k];
@@ -555,7 +558,7 @@
     }
     indicefront++;
 }
-}
+}*/
 
 //void resolve(int Nbgen){ 
 //int nbCrossover;
@@ -568,8 +571,6 @@
 //  displayPopulation();
   
 
-  // }
-
-
+   
 
 
