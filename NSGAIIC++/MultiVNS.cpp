@@ -1,0 +1,32 @@
+#include<iostream> 
+#include<vector> 
+#include<fstream> 
+#include<string>
+#include "MultiVNSAlgorithm.hpp"
+
+int main(){
+      
+      
+      /*La fonction checkup n'est pas bonne */
+ 
+   std::string file = "knapsack.txt";
+   MultiVNSAlgorithm MultiVNS = MultiVNSAlgorithm(file,5,1);
+   /* NSGAII.initPopulation();
+   NSGAII.computeExtremePoint();
+   NSGAII.rankPopulation();
+   NSGAII.definePopulationfront();
+   NSGAII.measureCrowdingDistance();
+   NSGAII.Tournament();
+   NSGAII.displayEchantillon();
+   for(int i = 0; i < 5; i++){
+      try{
+   NSGAII.CrossoverMutation();
+   }catch(int err){
+      std::cout << "Il y'a un problème dans la fonction";
+
+   }
+}
+NSGAII.UpdateElitePopulation(); */
+
+MultiVNS.resolve(20);
+}
