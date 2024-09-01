@@ -1,4 +1,4 @@
-from NSGAIIAlgorithm import NSGAIIAlgorithm
+from MultiVNSPython.vnsAlgorithm import NSGAIIAlgorithm
 import random
 import os
 
