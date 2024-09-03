@@ -9,7 +9,6 @@ class Solution:
         self.SumConstraint = [0 for i in range(nbconstraint)]
         self.fitnessValue1 = 0
         self.fitnessValue2 = 0 
-
         self.NbVariable = nbVariable
         self.Nbconstraint = nbconstraint
         self.listConstraint = listConstraint
@@ -136,8 +135,10 @@ def init_non_dominated_point(self):
             self.point_choosen = init_non_dominated_point[0]
             
              
-def add(self):
-      list_alea = [i for i in range(self.NbVariable) if self.CopySolution[i] == 0]
+def add(self,vector_solution,lgt):
+      copy_solution = self.non_dominated_points
+      for i in range(lgt):
+            list_alea = [i for i in range(lgt) if copy_solution[i] == 0]
       indice = random.choice(list_alea)
       self.CopySolution[indice] = 1
       
@@ -147,6 +148,9 @@ def drop(self):
       self.CopySolution[indice] = 0
       
 def neightboorhood(self):
+      solution = 0 
+      lenghtneigborhood = len(self.non_dominated_points)
+      for i in range()
       
             
             
